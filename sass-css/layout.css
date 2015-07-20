@@ -1,0 +1,16 @@
+.user-input input{
+  margin: 3px;
+  display: block;
+  clear: both;
+
+}
+
+.user-input{
+  margin-top: 30px;
+}
+
+.main-content{
+  margin-left:10px;
+
+
+}

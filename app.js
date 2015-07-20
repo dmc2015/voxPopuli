@@ -1,18 +1,33 @@
 var app = angular.module('popular.io', []);
 
-app.controller('MainCtrl', [
-	'$scope',
-	function($scope){
-		$scope.test = 'Hello world!';
-
-
-		$scope.posts = [
+app.factory('posts', [function(){
+	//the body of a service
+	var postobject = {
+		posts: [
 			{title: 'post 1', upvotes:2},
 			{title: 'post 2', upvotes:1},
 			{title: 'post 3', upvotes:5},
 			{title: 'post 4', upvotes:4},
 			{title: 'post 5', upvotes:11}
-		];
+		]
+	};
+	return postobject;
+}]);
+
+app.controller('MainCtrl', [
+	'$scope',
+	'posts',
+	function($scope, posts){
+		$scope.test = 'Hello world!';
+
+
+		$scope.posts = posts.posts/*[
+			{title: 'post 1', upvotes:2},
+			{title: 'post 2', upvotes:1},
+			{title: 'post 3', upvotes:5},
+			{title: 'post 4', upvotes:4},
+			{title: 'post 5', upvotes:11}
+		];*/
 
 		$scope.addPost = function(){
 			if(!$scope.title || $scope.title === "") {return;}
