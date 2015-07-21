@@ -1,4 +1,4 @@
-var app = angular.module('popular.io', []);
+var app = angular.module('voxPopuli', ['ui.router']);
 
 app.factory('posts', [function(){
 	//the body of a service
@@ -49,6 +49,20 @@ app.controller('MainCtrl', [
 
 	}
 
+app.config([
+		'$stateProvider',
+		'$urlRouterProvider',
+		function($stateProvider, $urlRouterProvider){
+		
+			$stateProvider
+				.state('home',{
+					url: '/home',
+					templateUrl: '/home.html',
+					controller: 'MainCtrl'
+				});
+
+			$urlRouterProvider.otherwise('home');
+		}]);
 
 
 
