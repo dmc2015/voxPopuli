@@ -1,14 +1,14 @@
-var app = angular.module('popular.io', []);
+var app = angular.module('VoxPopuli', []);
 
 app.factory('posts', [function(){
 	//the body of a service
 	var postobject = {
 		posts: [
-			{title: 'post 1', upvotes:2},
-			{title: 'post 2', upvotes:1},
-			{title: 'post 3', upvotes:5},
-			{title: 'post 4', upvotes:4},
-			{title: 'post 5', upvotes:11}
+			{title: 'post 1', upvotes:2, downvotes:1},
+			{title: 'post 2', upvotes:1, downvotes:1},
+			{title: 'post 3', upvotes:5, downvotes:1},
+			{title: 'post 4', upvotes:4, downvotes:1},
+			{title: 'post 5', upvotes:11, downvotes:1}
 		]
 	};
 	return postobject;
@@ -45,6 +45,10 @@ app.controller('MainCtrl', [
 			post.upvotes +=1;
 
 		};
+
+	$scope.incrementDownvotes = function(post){
+		post.downvotes +=1;
+	}
 
 
 	}
