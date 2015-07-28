@@ -1,3 +1,8 @@
 .main-content{
   font-size:20px;
 }
+
+
+.glyphicon-thumbs-up{
+  cursor:pointer;
+}

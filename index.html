@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>My Angular App!</title>
+	<title>VoxPopuli</title>
 
 	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 
@@ -14,22 +14,25 @@
 	<link rel="stylesheet" type="text/css" href="sass-css/theme.css"/>
 
 	<script src="app.js"></script>
-	<style> .glyphicon-thumbs-up { cursor:pointer } </style>
 </head>
 
-<body ng-app="voxPopuli">
+
+<body ng-app="VoxPopuli" ng-controller="MainCtrl">
 	<div class="row container">
 
 		<div class="col-md-6 col-md-offset-3">
-
-			<ui-view></ui-view>
-			<!--<div class="page-header">
-				<h1>VoxPopuli</h1> -->
+			<div class="page-header">
+				<h1>VoxPopuli</h1>
 			</div>
 
-			<div ng-repeat="post in posts | orderBy: '-upvotes'">
+			<div ng-repeat="post in posts | orderBy:'downvotes - upvotes'">
+				<!-- <div ng-repeat="post in posts | orderBy: '-upvotes'">  This is the line from the guide, it picks the highest up votes. The line above is new and subtracts downvotes fom upvotes and then puts the one with the highest difference reletative to upvotes on top-->
 				<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
-				{{post.upvotes}}
+				<span class="up-vote-num">{{post.upvotes}}</span>
+
+				<span class="glyphicon glyphicon-thumbs-down" ng-click="incrementDownvotes(post)"></span>
+				<span class="down-vote-num">{{post.downvotes}}</span>
+
 				<span class=main-content>
 					<a ng-show="post.link" href="{{post.link}}">
 						{{post.title}}
