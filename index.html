@@ -24,10 +24,34 @@
 	</div>
 
 
+<script type="text/ng-template" id="/posts.html">
+	<div class="page-header">
+	<h3>
+		<a ng-show="post.link" href="{{post.link}}">
+			{{post.title}}
+		</a>
+		<span ng-hide="post.link">
+			{{post.title}}
+			</span>
+	</h3>
+	</div>
 
+	<div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
+		<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
+			{{comment.upvotes}} - by {{comment.author}}
+		<span style="font-size:20px; margin-left:10px;">
+			{{comment.body}}
+		</span>
+		</div>
 
-
-
+		<form ng-submit="addComment()" style="margin-top:30px;">
+			<h3>Add a New Comment</h3>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="New Comment ?" ng-model="body"</input>
+			</div>
+			<button type="submit" class="btn btn-primary">Post</button>
+		</form>
+</script>
 
 	<script type="text/ng-template" id="/home.html">
 
@@ -36,7 +60,7 @@
 	</div>
 
 	<div ng-repeat="post in posts | orderBy:'downvotes - upvotes'">
-	<!-- <div ng-repeat="post in posts | orderBy: '-upvotes'">  This is the line from the guide, it picks the highest up votes. The line above is new and subtracts downvotes fom upvotes and then puts the one with the highest difference reletative to upvotes on top-->
+	<!-- //<div ng-repeat="post in posts | orderBy: '-upvotes'">  This is the line from the guide, it picks the highest up votes. The line above is new and subtracts downvotes fom upvotes and then puts the one with the highest difference reletative to upvotes on top-->
 	<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
 	<span class="up-vote-num">{{post.upvotes}}</span>
 
@@ -50,6 +74,9 @@
 	<span ng-hide="post.link">
 	{{post.title}}
 	</span>
+	</span>
+	<span>
+		<a href="#/posts/{{$index}}">Comments</a>
 	</span>
 	</div>
 
