@@ -34,6 +34,7 @@ router.param('post', function(req, res, next, id){
 });
 
 
+
 //UTILIZES THE ABOVE ROUTE TO FIND A GIVEN POST BASED ON ITS ID
 router.get('/posts/:post', function(req, res){
   res.json(req.post);
@@ -43,7 +44,6 @@ router.get('/posts/:post', function(req, res){
 router.put('/posts/:post/upvote', function(req, res, next){
   req.post.upvote(function(err, post){
     if (err) {return next(err); }
-
     res.json(post);
   });
 });
@@ -63,6 +63,17 @@ router.post('/posts/:post/comments', function(req, res, next){
   });
 });
 
+//FINDS THE GIVEN COMMENT PRIOR TO UPVOTING THE COMMENT
+router.param('comment', function(req, res, next, id){
+  var query = Comment.findById(id);
+
+  query.exec(function (err, post){
+    if (err) {return next(err); }
+    if (!comment) {return next(new Error('can\'t find comment'));}
+    req.comment = comment;
+    return next();
+  });
+});
 
 //WRITE A UPVOTE ON A COMMENT, NEEDS A PARAMS TO FIND RIGHT COMMENT
 router.post('/posts/:post/comments/:comment/upvote', function(req, res, next){
