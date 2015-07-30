@@ -23,7 +23,7 @@ router.post('/posts', function(req, res, next){
 
 //FINDS THE ID OF A GIVEN POST - THIS IS A MIDDLEWARE FUNCTION
 router.param('post', function(req, res, next, id){
-  var query = POst.findById(id);
+  var query = Post.findById(id);
 
   query.exec(function (err, post){
       if (err) {return next(err); }
@@ -39,8 +39,38 @@ router.get('/posts/:post', function(req, res){
   res.json(req.post);
 });
 
+//Calls on a method from the  PostSchema to upvote a post
+router.put('/posts/:post/upvote', function(req, res, next){
+  req.post.upvote(function(err, post){
+    if (err) {return next(err); }
+
+    res.json(post);
+  });
+});
+
+//Allows users to create a comment on a post
+router.post('/posts/:post/comments', function(req, res, next){
+  var comment = new Comment(req.body);
+  comment.post = req.post;
+
+  comment.save(function(err, comment){
+    if(err){ return next(err); }
+
+    req.post.comments.push(comment);
+    req.post.save(function(err, post){
+      if(err){ return next(err); }
+    });
+  });
+});
 
 
+//WRITE A UPVOTE ON A COMMENT, NEEDS A PARAMS TO FIND RIGHT COMMENT
+router.post('/posts/:post/comments/upvote', function(req, res, next){
+  req.comment.upvote(function(err, comment){
+    if (err) {return next(err); }
+    res.json(post);
+  });
+});
 
 
 /* GET home page. */
