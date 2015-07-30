@@ -1,0 +1,103 @@
+<html>
+<head>
+	<title>VoxPopuli</title>
+
+	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/stylesheets/layout.css"/>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/theme.css"/>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
+
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
+
+
+
+</head>
+
+<body ng-app="VoxPopuli" ng-controller="MainCtrl">
+	<div class="row container">
+
+		<div class="col-md-6 col-md-offset-3">
+
+			<div class="page-header">
+				<h1><a href="#/home"> VoxPopuli</a></h1>
+			</div>
+
+			<ui-view></ui-view>
+
+	</div>
+
+
+<script type="text/ng-template" id="/posts.html">
+	<div class="page-header">
+	<h3>
+		<a ng-show="post.link" href="{{post.link}}">
+			{{post.title}}
+		</a>
+		<span ng-hide="post.link">
+			{{post.title}}
+			</span>
+	</h3>
+	</div>
+
+	<div ng-repeat="comment in post.comments | orderBy:'-upvotes'">
+		<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
+			{{comment.upvotes}} {{comment.downvotes}}- by {{comment.author}}
+		<span class="maincontent">
+			{{comment.body}}
+		</span>
+		</div>
+
+		<form ng-submit="addComment()" class="user-input"">
+			<h3>Add a New Comment</h3>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="New Comment ?" ng-model="body"</input>
+			</div>
+			<button type="submit" class="btn btn-primary">Post</button>
+		</form>
+</script>
+
+	<script type="text/ng-template" id="/home.html">
+
+
+	<div ng-repeat="post in posts | orderBy:'downvotes - upvotes'">
+	<!-- //<div ng-repeat="post in posts | orderBy: '-upvotes'">  This is the line from the guide, it picks the highest up votes. The line above is new and subtracts downvotes fom upvotes and then puts the one with the highest difference reletative to upvotes on top-->
+	<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
+	<span class="up-vote-num">{{post.upvotes}}</span>
+
+	<span class="glyphicon glyphicon-thumbs-down" ng-click="incrementDownvotes(post)"></span>
+	<span class="down-vote-num">{{post.downvotes}}</span>
+
+	<span class=main-content>
+		<a ng-show="post.link" href="{{post.link}}">
+			{{post.title}}
+		</a>
+		<span ng-hide="post.link">
+			{{post.title}}
+			</span>
+	</span>
+	<!-- // <span>
+	// 	<a href="{{post.commentLink}}">
+	// 	</a>
+	// </span -->
+	<span {{orderBy: 'post{{$index}}'>
+		<a href="#/posts/{{$index}}">Comments</a>
+	</span>
+	</div>
+
+	<form class="user-input" ng-submit="addPost()">
+	<h2>Add a New Post</h2>
+	<div class="form-group">
+	<input class="form-control" text="text" ng-model="title" placeholder="Title of Your Post"></input>
+	</div>
+	<div class="form-group">
+	<input class="form-control" text="text" ng-model="link" placeholder="Your Link"></inpu>
+	</div>
+	<button type="submit" class="btn btn-primary">Post</button>
+	</form>
+
+	</script>
+
+	<script src="/javascripts/angularApp.js"></script>
+</body>
+</html>
