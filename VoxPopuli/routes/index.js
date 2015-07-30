@@ -36,8 +36,18 @@ router.param('post', function(req, res, next, id){
 
 
 //UTILIZES THE ABOVE ROUTE TO FIND A GIVEN POST BASED ON ITS ID
-router.get('/posts/:post', function(req, res){
-  res.json(req.post);
+// Old Version
+// router.get('/posts/:post', function(req, res){
+//   res.json(req.post);
+// });
+
+// New Version populate methods allows all comments associated with a given post be loaded
+
+router.get('posts/:post', function(req, res, next){
+  req.post.populate('comments', function(err, post) {
+    if (err) {return next(err);}
+    res.json(post);
+  });
 });
 
 //Calls on a method from the  PostSchema to upvote a post
