@@ -65,7 +65,7 @@ router.post('/posts/:post/comments', function(req, res, next){
 
 
 //WRITE A UPVOTE ON A COMMENT, NEEDS A PARAMS TO FIND RIGHT COMMENT
-router.post('/posts/:post/comments/upvote', function(req, res, next){
+router.post('/posts/:post/comments/:comment/upvote', function(req, res, next){
   req.comment.upvote(function(err, comment){
     if (err) {return next(err); }
     res.json(post);
