@@ -39,6 +39,7 @@ app.factory('posts', [function(){
 app.controller('MainCtrl', [
 	'$scope',
 	'posts',
+	'$stateParams',
 	function($scope, posts){
 		$scope.test = 'Hello world!';
 		$scope.posts = posts.posts;/*[
@@ -55,6 +56,7 @@ app.controller('MainCtrl', [
 					title: $scope.title,
 					link: $scope.link,
 					upvotes:0,
+					downvotes:0,
 					comments: [
 						// {author: 'Dave', body: 'Well said', upvotes: 0},
 						// {author: 'Bill Bob', body: 'You lie', upvotes: 1}
