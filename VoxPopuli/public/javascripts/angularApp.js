@@ -1,5 +1,11 @@
 var app = angular.module('VoxPopuli', ['ui.router']);
 
+//
+// allposts.getAll = function(){
+// 	return $http.get('/posts').success(function(data){
+// 		angular.copy(data, allposts.posts);
+// 	});
+// };
 
 app.config([
 	'$stateProvider',
@@ -9,7 +15,12 @@ app.config([
 		.state('home', {
 			url: '/home',
 			templateUrl: '/home.html',
-			controller: 'MainCtrl'
+			controller: 'MainCtrl',
+			// resolve: {
+			// 	postPromise: ['posts', function(posts){
+			// 		return posts.getAll();
+			// 	}]
+			// }
 		})//;
 		.state('posts', {
 			url: '/posts/{id}',
@@ -19,7 +30,7 @@ app.config([
 		$urlRouterProvider.otherwise('home');
 }]);
 
-app.factory('posts', [function(){
+app.factory('posts', ['$http', function($http){
 	//the body of a service
 	var postobject = {
 		posts: [
@@ -93,6 +104,4 @@ app.controller('PostsCtrl', [
 			});
 			$scope.body = '';
 		};
-
-
 }]);
