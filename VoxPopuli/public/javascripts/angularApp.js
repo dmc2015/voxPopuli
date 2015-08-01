@@ -48,6 +48,12 @@ app.factory('posts', ['$http', function($http){
 			postobject.posts.push(data);
 		});
 	};
+
+	postobject.upvote = function(post){
+		return $http.put('/posts/' + post._id + '/upvote').success(function(datat){
+			post.upvotes += 1;
+		});
+	};
 	return postobject;
 }]);
 
@@ -85,7 +91,8 @@ app.controller('MainCtrl', [
 
 
 			$scope.incrementUpvotes = function(post){
-				post.upvotes +=1;
+				// post.upvotes +=1; NON-PERSISTENT
+				posts.upvote(post); //PERSISTENT
 			};
 
 			$scope.incrementDownvotes = function(post){
