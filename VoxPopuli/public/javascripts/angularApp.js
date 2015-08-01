@@ -1,11 +1,5 @@
 var app = angular.module('VoxPopuli', ['ui.router']);
 
-//
-// allposts.getAll = function(){
-// 	return $http.get('/posts').success(function(data){
-// 		angular.copy(data, allposts.posts);
-// 	});
-// };
 
 app.config([
 	'$stateProvider',
@@ -16,11 +10,11 @@ app.config([
 			url: '/home',
 			templateUrl: '/home.html',
 			controller: 'MainCtrl',
-			// resolve: {
-			// 	postPromise: ['posts', function(posts){
-			// 		return posts.getAll();
-			// 	}]
-			// }
+			resolve: {
+				postPromise: ['posts', function(posts){
+					return posts.getAll();
+				}]
+			}
 		})//;
 		.state('posts', {
 			url: '/posts/{id}',
@@ -44,6 +38,16 @@ app.factory('posts', ['$http', function($http){
 		// 	{title: 'post 5', upvotes:11, downvotes:1}
 		// ]
 	};
+	postobject.getAll = function(){
+		return $http.get('/posts').success(function(data){
+			angular.copy(data, postobject.posts);
+		});
+	};
+	postobject.create = function(post){
+		return $http.post('/posts', post).success(function(data){
+			postobject.posts.push(data);
+		});
+	};
 	return postobject;
 }]);
 
@@ -63,15 +67,17 @@ app.controller('MainCtrl', [
 
 			$scope.addPost = function(){
 				if(!$scope.title || $scope.title === "") {return;}
-				$scope.posts.push({
+				// $scope.posts.push({  NON-PERSISTENT VERSION
+				posts.create({ //PERSISTENT VERSTION
 					title: $scope.title,
 					link: $scope.link,
-					upvotes:0,
-					downvotes:0,
-					comments: [
-						// {author: 'Dave', body: 'Well said', upvotes: 0},
-						// {author: 'Bill Bob', body: 'You lie', upvotes: 1}
-					]
+
+					// upvotes:0,
+					// downvotes:0,
+					// comments: [
+					// 	// {author: 'Dave', body: 'Well said', upvotes: 0},
+					// 	// {author: 'Bill Bob', body: 'You lie', upvotes: 1}
+					//]
 				});
 				$scope.title="";
 				$scope.link="";
@@ -104,4 +110,6 @@ app.controller('PostsCtrl', [
 			});
 			$scope.body = '';
 		};
+
+
 }]);
