@@ -76,13 +76,15 @@
 			{{post.title}}
 			</span>
 	</span>
-	<!-- // <span>
-	// 	<a href="{{post.commentLink}}">
-	// 	</a>
-	// </span -->
-	<span {{orderBy: 'post{{$index}}'>
-		<a href="#/posts/{{$index}}">Comments</a>
+ <span>
+		<a href="#/posts/{{post._id}}">Comment</a>
 	</span>
+
+	<!-- //<span {{orderBy: 'post{{$index}}'>
+		 //<a href="#/posts/{{$index}}">Comments</a>
+	//	<a href="#/posts/{{post._id}}">Comments</a>
+	//</span> -->
+
 	</div>
 
 	<form class="user-input" ng-submit="addPost()">
