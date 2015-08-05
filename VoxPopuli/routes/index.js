@@ -43,7 +43,7 @@ router.param('post', function(req, res, next, id){
 
 // New Version populate methods allows all comments associated with a given post be loaded
 
-router.get('posts/:post', function(req, res, next){
+router.get('/posts/:post', function(req, res, next){
   req.post.populate('comments', function(err, post) {
     if (err) {return next(err);}
     res.json(post);
