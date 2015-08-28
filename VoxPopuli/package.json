@@ -18,5 +18,11 @@
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.11.2",
+    "jshint-stylish": "^2.0.1",
+    "merge-stream": "^1.0.0"
   }
 }
