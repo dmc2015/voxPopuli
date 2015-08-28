@@ -1,12 +1,12 @@
 var mongoose = require('mongoose'),
-    crypto = require('crpto'),
+    crypto = require('crypto'),
     jwt = require('jsonwebtoken');
 
 
 var UserSchema = new mongoose.Schema({
   username: {type: String, lowercase: true, unique: true},
   hash: String,
-  hash: String,
+  salt: String,
 });
 
 UserSchema.methods.setPassword = function(password) {
@@ -15,7 +15,7 @@ UserSchema.methods.setPassword = function(password) {
 
   //crypto pbkdf2Sync is a method that is used as a standard on the net,
   //arguments(userpassword, salt used on password, amount of iterations for the salt, end amount of  characters the hash should contain)
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64)
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64);
 };
 
 UserSchema.methods.validPassword = function(password) {

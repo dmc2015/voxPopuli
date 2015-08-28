@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
-    jscheck = require('gulp-jshint');
-
+    jscheck = require('gulp-jshint'),
+    merge = require('merge-stream');
+//STRICTLY TEST
 gulp.task('jshint', function() {
   var jscheckModels = gulp.src('./models/**/*.js')
     .pipe(jscheck())
@@ -10,7 +11,11 @@ gulp.task('jshint', function() {
         .pipe(jscheck())
         .pipe(jscheck.reporter('jshint-stylish'));
 
-    return merge(jscheckModels, jscheckPassport)
+  var gulpSelf = gulp.src('./gulpfile.js')
+      .pipe(jscheck())
+      .pipe(jscheck.reporter('jshint-stylish'));
+
+    return merge(jscheckModels, jscheckPassport, gulpSelf);
 });
 
 gulp.task('default', ['jshint']);
