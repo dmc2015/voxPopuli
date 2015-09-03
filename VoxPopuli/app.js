@@ -10,7 +10,7 @@ var express = require('express'),
 require('./models/Posts.js');
 require('./models/Comments.js');
 require('./models/Users.js');
-require('./config/passport.js')
+require('./config/passport.js');
 
 mongoose.connect('mongodb://localhost/news');
 
