@@ -75,7 +75,7 @@ app.config([
 		auth.logOut = function() {
 			$window.localStorage.removeItem('VoxPopuli-news-token')
 		}
-		
+
 		return auth
 
 	}]);
@@ -132,71 +132,95 @@ app.config([
 		return postobject;
 	}]);
 
-	app.controller('MainCtrl', [
+	app.controlller('AuthCtrl', [
 		'$scope',
-		'posts',
-		'$stateParams',
-		function($scope, posts){
-			$scope.test = 'Hello world!';
-			$scope.posts = posts.posts;/*[
-				{title: 'post 1', upvotes:2},
-				{title: 'post 2', upvotes:1},
-				{title: 'post 3', upvotes:5},
-				{title: 'post 4', upvotes:4},
-				{title: 'post 5', upvotes:11}
-			];*/
+		'$state',
+		'auth',
+		function($scope, $state, auth) {
+			$scope.user = {};
 
-			$scope.addPost = function(){
-				if(!$scope.title || $scope.title === "") {return;}
-				// $scope.posts.push({  NON-PERSISTENT VERSION
-				posts.create({ //PERSISTENT VERSTION
-					title: $scope.title,
-					link: $scope.link,
-
-					// upvotes:0,
-					// downvotes:0,
-					// comments: [
-					// 	// {author: 'Dave', body: 'Well said', upvotes: 0},
-					// 	// {author: 'Bill Bob', body: 'You lie', upvotes: 1}
-					//]
+			$scope.register = function(){
+				auth.register($scope.user).error(function(error){
+					$scope.error = error;
+				}).then(function() {
+					$state.go('home');
 				});
-				$scope.title="";
-				$scope.link="";
 			};
 
-
-			$scope.incrementUpvotes = function(post){
-				// post.upvotes +=1; NON-PERSISTENT
-				posts.upvote(post); //PERSISTENT
+			$scope.logIn = function() {
+				auth.logIn($scope.user).error(function(errir){
+					$scope.error = error;
+				}).then(function() {
+					$state.go('home');
+				});
 			};
+		]);
 
-			$scope.incrementDownvotes = function(post){
-				post.downvotes +=1;
-			};
-		}])//;
-
-		app.controller('PostsCtrl', [
+		app.controller('MainCtrl', [
 			'$scope',
 			'posts',
-			'post',
-			function($scope, posts, post){
-				// $scope.post = posts.posts[$stateParams.id];old version that does not show the actual post when viewing the post
-				$scope.post = post;
+			'$stateParams',
+			function($scope, posts){
+				$scope.test = 'Hello world!';
+				$scope.posts = posts.posts;/*[
+					{title: 'post 1', upvotes:2},
+					{title: 'post 2', upvotes:1},
+					{title: 'post 3', upvotes:5},
+					{title: 'post 4', upvotes:4},
+					{title: 'post 5', upvotes:11}
+				];*/
 
-				$scope.addComment = function(){
-					if ($scope.body === '') {return; }
-					posts.addComment(post._id, {
-						body: $scope.body,
-						author: 'user',
-					}).success(function(comment){
-						$scope.post.comments.push(comment);
+				$scope.addPost = function(){
+					if(!$scope.title || $scope.title === "") {return;}
+					// $scope.posts.push({  NON-PERSISTENT VERSION
+					posts.create({ //PERSISTENT VERSTION
+						title: $scope.title,
+						link: $scope.link,
+
+						// upvotes:0,
+						// downvotes:0,
+						// comments: [
+						// 	// {author: 'Dave', body: 'Well said', upvotes: 0},
+						// 	// {author: 'Bill Bob', body: 'You lie', upvotes: 1}
+						//]
 					});
-					// upvotes: 0,
-					// downvotes: 0
-					$scope.body = '';
-				};
-				$scope.incrementUpvotes = function(comment) {
-					posts.upvoteComment(post, comment);
+					$scope.title="";
+					$scope.link="";
 				};
 
-			}]);
+
+				$scope.incrementUpvotes = function(post){
+					// post.upvotes +=1; NON-PERSISTENT
+					posts.upvote(post); //PERSISTENT
+				};
+
+				$scope.incrementDownvotes = function(post){
+					post.downvotes +=1;
+				};
+			}])//;
+
+			app.controller('PostsCtrl', [
+				'$scope',
+				'posts',
+				'post',
+				function($scope, posts, post){
+					// $scope.post = posts.posts[$stateParams.id];old version that does not show the actual post when viewing the post
+					$scope.post = post;
+
+					$scope.addComment = function(){
+						if ($scope.body === '') {return; }
+						posts.addComment(post._id, {
+							body: $scope.body,
+							author: 'user',
+						}).success(function(comment){
+							$scope.post.comments.push(comment);
+						});
+						// upvotes: 0,
+						// downvotes: 0
+						$scope.body = '';
+					};
+					$scope.incrementUpvotes = function(comment) {
+						posts.upvoteComment(post, comment);
+					};
+
+				}]);
