@@ -186,8 +186,10 @@ app.config([
 		app.controller('MainCtrl', [
 			'$scope',
 			'posts',
+			'auth',
 			'$stateParams',
-			function($scope, posts){
+			function($scope, posts, auth){
+				$scope.isLoggedIn = auth.isLoggedIn;
 				$scope.test = 'Hello world!';
 				$scope.posts = posts.posts;/*[
 					{title: 'post 1', upvotes:2},
@@ -230,8 +232,10 @@ app.config([
 				'$scope',
 				'posts',
 				'post',
-				function($scope, posts, post){
+				'auth',
+				function($scope, posts, post, auth){
 					// $scope.post = posts.posts[$stateParams.id];old version that does not show the actual post when viewing the post
+					$scope.isLoggedIn = auth.isLoggedIn;
 					$scope.post = post;
 
 					$scope.addComment = function(){
