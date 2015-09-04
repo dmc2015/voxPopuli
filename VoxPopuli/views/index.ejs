@@ -14,7 +14,19 @@
 
 </head>
 
-<body ng-app="VoxPopuli" ng-controller="MainCtrl">
+<body ng-app="VoxPopuli">
+
+	<!-- <body ng-app="VoxPopuli" ng-controller="MainCtrl">  old version-->
+	<nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
+		<ul class="nav navbar-nav">
+			<!-- this could be dryer i think-->
+			<li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
+			<li ng-show="isLoggedIn"><a href="" ng-click="logOut()">Log Out</a></li>
+
+			<li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
+			<li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
+		</ul>
+	</nav>
 	<div class="row container">
 
 		<div class="col-md-6 col-md-offset-3">
