@@ -1,34 +1,19 @@
 var express = require('express');
+var jwt = require('express-jwt');
+var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
+
 var router = express.Router();
 
 var mongoose = require('mongoose');
 //models
 var Post = mongoose.model('Post');
 var Comment = mongoose.model('Comment');
-var User = mongoose.mode('User');
+var User = mongoose.model('User');
 
 
-var jwt = require('express-jwt');
-var auth = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 
 var passport = required('passport');
-
-router.post('/posts', auth, function(req,res,next){
-
-});
-
-router.put('/posts/:post/upvote', auth, function(req, res, next){
-
-});
-
-router.post('/posts/:post/comments', auth, function(req,res,next) {
-
-});
-
-router.put('/posts/:post/comments/:comment/upvote', auth, function(req, res, next){
-
-});
 
 router.post('/posts', auth, function(req, res, next) {
   var comment = new Comment(req.body);
@@ -46,7 +31,8 @@ router.post('/register', function(req, res, next) {
 
   user.username = req.body.username;
 
-  user.setPassword(req.body.password)
+  user.setPassword(req.body.password)//;
+
   user.save(function(err) {
     if(err){return next(err); }
     return res.json({token : user.generateJWT()})
@@ -78,8 +64,9 @@ router.get('/posts', function(req, res, next){
 });
 
 //POSTS A NEW post
-router.post('/posts', function(req, res, next){
+router.post('/posts', auth, function(req, res, next){
   var post = new Post(req.body);
+  post.author = req.payload.username;
   post.save(function(err, post){
     if(err){ return next(err); }
     res.json(post);
@@ -116,7 +103,7 @@ router.get('/posts/:post', function(req, res, next){
 });
 
 //Calls on a method from the  PostSchema to upvote a post
-router.put('/posts/:post/upvote', function(req, res, next){
+router.put('/posts/:post/upvote', auth, function(req, res, next){
   req.post.upvote(function(err, post){
     if (err) {return next(err); }
     res.json(post);
@@ -124,8 +111,9 @@ router.put('/posts/:post/upvote', function(req, res, next){
 });
 
 //Allows users to create a comment on a post
-router.post('/posts/:post/comments', function(req, res, next){
+router.post('/posts/:post/comments', auth,  function(req, res, next){
   var comment = new Comment(req.body);
+  comment.author = req.payload.username;
   comment.post = req.post;
 
   comment.save(function(err, comment){
@@ -151,7 +139,7 @@ router.param('comment', function(req, res, next, id){
 });
 
 //WRITE A UPVOTE ON A COMMENT, NEEDS A PARAMS TO FIND RIGHT COMMENT
-router.post('/posts/:post/comments/:comment/upvote', function(req, res, next){
+router.post('/posts/:post/comments/:comment/upvote', auth, function(req, res, next){
   req.comment.upvote(function(err, comment){
     if (err) {return next(err); }
     res.json(post);

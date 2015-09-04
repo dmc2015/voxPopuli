@@ -29,6 +29,57 @@ app.config([
 		$urlRouterProvider.otherwise('home');
 	}]);
 
+	app.factory('auth', ['$http', '$window', function(http, $window) {
+		var auth = {};
+
+		auth.saveToken = function(token){
+			$window.localStorage['VoxPopuli-news-token'] = token;
+		}
+
+		auth.getToken = function(token){
+			return $window.localStorage['VoxPopuli'];
+		}
+
+		auth.isLoggedIn = function() {
+			var token = auth.getToken();
+
+			if (token){
+				var payload = JSON.parse($window.atob(token.split('.')[1]));
+				return payload.exp > Date.now() /1000;
+			} else {
+				return false;
+			}
+		}
+
+		auth.currentUser = function() {
+			if(auth.isLoggedIn()) {
+				var token = auth.getToken();
+				var payload = JSON.parse($window.atob(token.split('.')[1]));
+
+				return payload.username;
+			}
+		}
+
+		auth.register = function(user) {
+			return $http('/register', user).success(function(data){
+				auth.saveToken(data.token);
+			});
+		}
+
+		auth.logIn = function(user) {
+			return $http('/login', user).success(function(data){
+				auth.saveToken(data.token);
+			});
+		}
+
+		auth.logOut = function() {
+			$window.localStorage.removeItem('VoxPopuli-news-token')
+		}
+		
+		return auth
+
+	}]);
+
 	app.factory('posts', ['$http', function($http){
 		//the body of a service
 		var postobject = {
@@ -93,59 +144,59 @@ app.config([
 				{title: 'post 3', upvotes:5},
 				{title: 'post 4', upvotes:4},
 				{title: 'post 5', upvotes:11}
-				];*/
+			];*/
 
-				$scope.addPost = function(){
-					if(!$scope.title || $scope.title === "") {return;}
-					// $scope.posts.push({  NON-PERSISTENT VERSION
-					posts.create({ //PERSISTENT VERSTION
-						title: $scope.title,
-						link: $scope.link,
+			$scope.addPost = function(){
+				if(!$scope.title || $scope.title === "") {return;}
+				// $scope.posts.push({  NON-PERSISTENT VERSION
+				posts.create({ //PERSISTENT VERSTION
+					title: $scope.title,
+					link: $scope.link,
 
-						// upvotes:0,
-						// downvotes:0,
-						// comments: [
-						// 	// {author: 'Dave', body: 'Well said', upvotes: 0},
-						// 	// {author: 'Bill Bob', body: 'You lie', upvotes: 1}
-						//]
+					// upvotes:0,
+					// downvotes:0,
+					// comments: [
+					// 	// {author: 'Dave', body: 'Well said', upvotes: 0},
+					// 	// {author: 'Bill Bob', body: 'You lie', upvotes: 1}
+					//]
+				});
+				$scope.title="";
+				$scope.link="";
+			};
+
+
+			$scope.incrementUpvotes = function(post){
+				// post.upvotes +=1; NON-PERSISTENT
+				posts.upvote(post); //PERSISTENT
+			};
+
+			$scope.incrementDownvotes = function(post){
+				post.downvotes +=1;
+			};
+		}])//;
+
+		app.controller('PostsCtrl', [
+			'$scope',
+			'posts',
+			'post',
+			function($scope, posts, post){
+				// $scope.post = posts.posts[$stateParams.id];old version that does not show the actual post when viewing the post
+				$scope.post = post;
+
+				$scope.addComment = function(){
+					if ($scope.body === '') {return; }
+					posts.addComment(post._id, {
+						body: $scope.body,
+						author: 'user',
+					}).success(function(comment){
+						$scope.post.comments.push(comment);
 					});
-					$scope.title="";
-					$scope.link="";
+					// upvotes: 0,
+					// downvotes: 0
+					$scope.body = '';
+				};
+				$scope.incrementUpvotes = function(comment) {
+					posts.upvoteComment(post, comment);
 				};
 
-
-				$scope.incrementUpvotes = function(post){
-					// post.upvotes +=1; NON-PERSISTENT
-					posts.upvote(post); //PERSISTENT
-				};
-
-				$scope.incrementDownvotes = function(post){
-					post.downvotes +=1;
-				};
-			}])//;
-
-			app.controller('PostsCtrl', [
-				'$scope',
-				'posts',
-				'post',
-				function($scope, posts, post){
-					// $scope.post = posts.posts[$stateParams.id];old version that does not show the actual post when viewing the post
-					$scope.post = post;
-
-					$scope.addComment = function(){
-						if ($scope.body === '') {return; }
-						posts.addComment(post._id, {
-							body: $scope.body,
-							author: 'user',
-						}).success(function(comment){
-							$scope.post.comments.push(comment);
-						});
-						// upvotes: 0,
-						// downvotes: 0
-						$scope.body = '';
-					};
-					$scope.incrementUpvotes = function(comment) {
-						posts.upvoteComment(post, comment);
-					};
-
-				}]);
+			}]);
