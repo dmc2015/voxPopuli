@@ -100,7 +100,7 @@ app.config([
 
 	}]);
 
-	app.factory('posts', ['$http', auth,  function($http, auth){
+	app.factory('posts', ['$http', 'auth',  function($http, auth){
 		//the body of a service
 		var postobject = {
 			posts: [
@@ -159,7 +159,7 @@ app.config([
 		return postobject;
 	}]);
 
-	app.controlller('AuthCtrl', [
+	app.controller('AuthCtrl', [
 		'$scope',
 		'$state',
 		'auth',

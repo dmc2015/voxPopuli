@@ -113,7 +113,7 @@
 <div ng-hide="isLoggedIn()">
 <h3>You need to <a href="/#/login">LogIn</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
 </div>
-		<form class="user-input" ng-show="isLoggedIn()" ng-submit="addPost() style="margin-top:30px;">
+		<form class="user-input" ng-show="isLoggedIn()" ng-submit="addPost()" style="margin-top:30px;">
 		<h2>Add a New Post</h2>
 		<div class="form-group">
 		<input class="form-control" text="text" ng-model="title" placeholder="Title of Your Post"></input>
@@ -146,7 +146,7 @@
 		<div class="form-group">
 		<input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
 		</div>
-		<buton type="submit" class="btn btn-primary">Register</button>
+		<button type="submit" class="btn btn-primary">Register</button>
 		</form>
 		</script>
 
