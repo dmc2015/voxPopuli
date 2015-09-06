@@ -54,11 +54,11 @@ app.config([
 
 		auth.saveToken = function(token){
 			$window.localStorage['VoxPopuli-news-token'] = token;
-		}
+		};
 
 		auth.getToken = function(token){
 			return $window.localStorage['VoxPopuli'];
-		}
+		};
 
 		auth.isLoggedIn = function() {
 			var token = auth.getToken();
@@ -69,7 +69,7 @@ app.config([
 			} else {
 				return false;
 			}
-		}
+		};
 
 		auth.currentUser = function() {
 			if(auth.isLoggedIn()) {
@@ -78,25 +78,25 @@ app.config([
 
 				return payload.username;
 			}
-		}
+		};
 
 		auth.register = function(user) {
 			return $http('/register', user).success(function(data){
 				auth.saveToken(data.token);
 			});
-		}
+		};
 
 		auth.logIn = function(user) {
 			return $http('/login', user).success(function(data){
 				auth.saveToken(data.token);
 			});
-		}
+		};
 
 		auth.logOut = function() {
-			$window.localStorage.removeItem('VoxPopuli-news-token')
-		}
+			$window.localStorage.removeItem('VoxPopuli-news-token');
+		};
 
-		return auth
+		return auth;
 
 	}]);
 
@@ -175,13 +175,13 @@ app.config([
 			};
 
 			$scope.logIn = function() {
-				auth.logIn($scope.user).error(function(errir){
+				auth.logIn($scope.user).error(function(error){
 					$scope.error = error;
 				}).then(function() {
 					$state.go('home');
 				});
 			};
-		]);
+		}]);
 
 		app.controller('MainCtrl', [
 			'$scope',
@@ -226,7 +226,7 @@ app.config([
 				$scope.incrementDownvotes = function(post){
 					post.downvotes +=1;
 				};
-			}])//;
+			}]);
 
 			app.controller('PostsCtrl', [
 				'$scope',
