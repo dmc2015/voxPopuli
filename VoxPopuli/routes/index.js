@@ -13,7 +13,7 @@ var User = mongoose.model('User');
 
 
 
-var passport = required('passport');
+var passport = require('passport');
 
 router.post('/posts', auth, function(req, res, next) {
   var comment = new Comment(req.body);
