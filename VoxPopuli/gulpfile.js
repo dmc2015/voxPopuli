@@ -3,11 +3,23 @@ var gulp = require('gulp'),
     merge = require('merge-stream');
 //STRICTLY TEST
 gulp.task('jshint', function() {
-  var jscheckModels = gulp.src('./models/**/*.js')
+  var jsCheckModels = gulp.src('./models/*.js')
     .pipe(jscheck())
     .pipe(jscheck.reporter('jshint-stylish'));
 
-  var  jscheckPassport = gulp.src('./config/*.js')
+  var appServer = gulp.src('app.js')
+    .pipe(jscheck())
+    .pipe(jscheck.reporter('jshint-stylish'));
+
+  var routes = gulp.src('routes/*.js')
+    .pipe(jscheck())
+    .pipe(jscheck.reporter('jshint-stylish'));
+
+  var ngApp = gulp.src('public/**/*.js')
+    .pipe(jscheck())
+    .pipe(jscheck.reporter('jshint-stylish'));
+
+  var jscheckPassport = gulp.src('./config/*.js')
         .pipe(jscheck())
         .pipe(jscheck.reporter('jshint-stylish'));
 
@@ -15,7 +27,7 @@ gulp.task('jshint', function() {
       .pipe(jscheck())
       .pipe(jscheck.reporter('jshint-stylish'));
 
-    return merge(jscheckModels, jscheckPassport, gulpSelf);
+    return merge(jsCheckModels, jscheckPassport, gulpSelf, routes, appServer, ngApp);
 });
 
 gulp.task('default', ['jshint']);
