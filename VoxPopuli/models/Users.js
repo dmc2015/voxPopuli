@@ -15,12 +15,16 @@ UserSchema.methods.setPassword = function(password) {
 
   //crypto pbkdf2Sync is a method that is used as a standard on the net,
   //arguments(userpassword, salt used on password, amount of iterations for the salt, end amount of  characters the hash should contain)
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64);
+  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+  console.log(this.hash, ' passoword:', password);
+
 };
 
 UserSchema.methods.validPassword = function(password) {
-  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+  // this.salt = crypto.randomBytes(16).toString('hex');
 
+  var hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('hex');
+  console.log(hash, ' end of one hash ',this.hash, ' passoword:',password);
   return this.hash === hash;
 };
 
@@ -29,7 +33,7 @@ UserSchema.methods.generateJWT = function() {
       exp = new Date(today);
   exp.setDate(today.getDate() + 60);
 
-  return jwt.signin({
+  return jwt.sign({
     _id: this._id,
     username: this.username,
     exp: parseInt(exp.getTime() / 1000),

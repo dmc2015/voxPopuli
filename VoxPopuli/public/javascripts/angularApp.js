@@ -49,7 +49,7 @@ app.config([
 		$urlRouterProvider.otherwise('home');
 	}]);
 
-	app.factory('auth', ['$http', '$window', function(http, $window) {
+	app.factory('auth', ['$http', '$window', function($http, $window) {
 		var auth = {};
 
 		auth.saveToken = function(token){
@@ -57,7 +57,7 @@ app.config([
 		};
 
 		auth.getToken = function(token){
-			return $window.localStorage['VoxPopuli'];
+			return $window.localStorage['VoxPopuli-news-token'];
 		};
 
 		auth.isLoggedIn = function() {
@@ -81,13 +81,13 @@ app.config([
 		};
 
 		auth.register = function(user) {
-			return $http('/register', user).success(function(data){
+			return $http.post('/register', user).success(function(data){
 				auth.saveToken(data.token);
 			});
 		};
 
 		auth.logIn = function(user) {
-			return $http('/login', user).success(function(data){
+			return $http.post('/login', user).success(function(data){
 				auth.saveToken(data.token);
 			});
 		};
@@ -166,10 +166,18 @@ app.config([
 		function($scope, $state, auth) {
 			$scope.user = {};
 
+			// $scope.register = function(){
+			// 	auth.register($scope.user).error(function(error){
+			// 		$scope.error = error;
+			// 	}).then(function() {
+			// 		$state.go('home');
+			// 	});
+			// };
+
 			$scope.register = function(){
 				auth.register($scope.user).error(function(error){
 					$scope.error = error;
-				}).then(function() {
+				}).then(function(){
 					$state.go('home');
 				});
 			};
