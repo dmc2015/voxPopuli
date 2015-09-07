@@ -20,4 +20,5 @@ PostSchema.methods.downvote = function(cb){
   console.log(this.downvotes);
 };
 
-mongoose.model('Post', PostSchema);
+// mongoose.model('Post', PostSchema);
+module.export = mongoose.model('Post', PostSchema);

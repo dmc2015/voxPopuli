@@ -6,7 +6,13 @@ var router = express.Router();
 
 var mongoose = require('mongoose');
 //models
+
+// var Post = mongoose.model('Post'); if you do it this way validations are not used from the model
+//everything on the other file does not get used
+
 var Post = mongoose.model('Post');
+
+// var Post = require('../models/Posts.js');
 var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
 
@@ -15,11 +21,23 @@ var User = mongoose.model('User');
 
 var passport = require('passport');
 
-router.post('/posts', auth, function(req, res, next) {
-  var comment = new Comment(req.body);
-  comment.post = req.post;
-  comment.author = req.payload.username;
+//FINDS THE ID OF A GIVEN POST - THIS IS A MIDDLEWARE FUNCTION
+router.param('post', function(req, res, next, id){
+  var query = Post.findById(id);
+
+  query.exec(function (err, post){
+    if (err) {return next(err); }
+    if (!post) { return next(new Error('can\'t find post'));}
+    req.post = post;
+    return next();
+  });
 });
+
+// router.post('/posts', auth, function(req, res, next) {
+//   var comment = new Comment(req.body);
+//   comment.post = req.post;
+//   comment.author = req.payload.username;
+// });
 
 
 router.post('/register', function(req, res, next) {
@@ -68,24 +86,17 @@ router.get('/posts', function(req, res, next){
 //POSTS A NEW post
 router.post('/posts', auth, function(req, res, next){
   var post = new Post(req.body);
+  console.log(post);
   post.author = req.payload.username;
   post.save(function(err, post){
-    if(err){ return next(err); }
+    if(err){ return res.json(err); }
+
+    // if(err){ return next(err); }
     res.json(post);
   });
 });
 
-//FINDS THE ID OF A GIVEN POST - THIS IS A MIDDLEWARE FUNCTION
-router.param('post', function(req, res, next, id){
-  var query = Post.findById(id);
 
-  query.exec(function (err, post){
-    if (err) {return next(err); }
-    if (!post) { return next(new Error('can\'t find post'));}
-    req.post = post;
-    return next();
-  });
-});
 
 
 
@@ -141,6 +152,7 @@ router.post('/posts/:post/comments', auth,  function(req, res, next){
     req.post.comments.push(comment);
     req.post.save(function(err, post){
       if(err){ return next(err); }
+      res.json(comment);
     });
   });
 });
@@ -174,5 +186,13 @@ router.get('/', function(req, res, next) {
 
   res.render('index', { title: 'Express' });
 });
+
+
+//logs errors if no routes work
+router.use(function(err, req, res, next) {
+  console.log(err);
+  res.json(err);
+});
+
 
 module.exports = router;

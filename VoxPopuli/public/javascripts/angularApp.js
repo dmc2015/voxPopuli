@@ -131,6 +131,8 @@ app.config([
 				headers: {Authorization: 'Bearer '+auth.getToken()}
 			}).success(function(data){
 				postobject.posts.push(data);
+			}).error(function(data){
+				console.log(data);
 			});
 		};
 
@@ -272,7 +274,7 @@ app.config([
 
 				$scope.incrementDownvotes = function(post){
 					// post.downvotes +=1; //NON-PERSISTENT
-					invalidUser();
+					// invalidUser();
 					console.log('downvotes is called from mainctrl');
 					posts.downvote(post); //PERSISTENT
 				};
@@ -295,7 +297,7 @@ app.config([
 							body: $scope.body,
 							author: 'user',
 						}).success(function(comment){
-							$scope.post.comments.push(comment).console.log(err);
+							$scope.post.comments.push(comment);
 						});
 						// upvotes: 0,
 						// downvotes: 0
