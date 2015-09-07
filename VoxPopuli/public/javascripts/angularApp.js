@@ -138,7 +138,6 @@ app.config([
 			return $http.put('/posts/' + post._id + '/upvote', null, {
 				headers: {Authorization: 'Bearer '+auth.getToken()}
 			}).success(function(data){
-				debugger;
 				post.upvotes += 1;
 			});
 		};
@@ -147,12 +146,10 @@ app.config([
 			return $http.put('/posts/' + post._id + '/downvote', null, {
 				headers: {Authorization: 'Bearer '+auth.getToken()}
 			}).success(function(data){
-				debugger;
 				post.downvotes +=1;
 				console.log(post, 'reached the injected factory for posts down votes');
 			}).error(function(data){
 				console.log(data);
-				debugger;
 			});
 		};
 
@@ -198,10 +195,43 @@ app.config([
 			};
 		}]);
 
+
+		// app.controller('InvalidCtrl', [
+		// 	'$scope',
+		// 	'auth',
+		// 	function($scope, auth){
+		// 		$scope.showModal = false;
+		// 		$scope.isLoggedIn = auth.isLoggedIn;
+		// 		$scope.invalidUserMsg = 'You should login to take a look at the demo, Username: test Password: test';
+		// 		$scope.buttonClicked = "";
+		//
+		// 		$scope.invalidUser = function(){
+		// 			if (!isLoggedIn){
+		// 				$scope.showModal = true;
+		// 				return {
+		// 					invalidUserMsg
+		// 				};
+		// 			}
+		// 		};
+		// 	}
+		// ]);
+		//
+		// app.directive('pleaseLogin', 'InvalidCtrl', function() {
+		// 	return{
+		// 		template: '<div class="modal fade">' +
+		// 									'<div class="message">' +
+		// 											'<h4 class="modal-message" ng-bind="invalidUserMsg"> TEST </h4>' +
+		// 											'<div ng-transclude>Transclusion</div>' +
+		// 									'</div>'+
+		// 							'</div>'
+		// 	};
+		// });
+
 		app.controller('MainCtrl', [
 			'$scope',
 			'posts',
 			'auth',
+			// 'InvalidCtrl',
 			'$stateParams',
 			function($scope, posts, auth){
 				$scope.isLoggedIn = auth.isLoggedIn;
@@ -240,6 +270,7 @@ app.config([
 
 				$scope.incrementDownvotes = function(post){
 					// post.downvotes +=1; //NON-PERSISTENT
+					invalidUser();
 					console.log('downvotes is called from mainctrl');
 					posts.downvote(post); //PERSISTENT
 				};

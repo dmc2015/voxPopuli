@@ -20,8 +20,8 @@
 	<nav class="navbar navbar-default pull-right" ng-controller="NavCtrl">
 		<ul class="nav navbar-nav">
 			<!-- this could be dryer i think-->
-			<li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
-			<li ng-show="isLoggedIn"><a href="" ng-click="logOut()">Log Out</a></li>
+			<li ng-show="isLoggedIn()"><a>Hey {{ currentUser() }}!</a></li>
+			<li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log Out</a></li>
 
 			<li ng-hide="isLoggedIn()"><a href="/#/login">Log In</a></li>
 			<li ng-hide="isLoggedIn()"><a href="/#/register">Register</a></li>
@@ -63,7 +63,8 @@
 		</div>
 
 <div ng-hide="isLoggedIn()">
-<h3> You need to <a href="/#/login">LogIn</a> or <a href="/#/register">Register</a> before you can commment </h3>
+<h3> Wanna get in the know ? <a href="/#/login">LogIn</a> or <a href="/#/register">Register</a> to get involved! </h3>
+<h4>Since this is a demo please login with Username: test, Password: test</h4>
 </div>
 
 		<form ng-show="isLoggedIn()" ng-submit="addComment()" class="user-input">
@@ -77,13 +78,15 @@
 
 		<script type="text/ng-template" id="/home.html">
 
+		<!--// <pleaseLogin visible="showModal" ng-bind="invalidUserMsg"></pleaseLogin> -->
+
 
 		<div ng-repeat="post in posts | orderBy:'downvotes - upvotes'">
 		<!-- //<div ng-repeat="post in posts | orderBy: '-upvotes'">  This is the line from the guide, it picks the highest up votes. The line above is new and subtracts downvotes fom upvotes and then puts the one with the highest difference reletative to upvotes on top-->
 		<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
 		<span class="up-vote-num">{{post.upvotes}}</span>
 
-	
+
 		<span class="glyphicon glyphicon-thumbs-down" ng-click="incrementDownvotes(post)"></span>
 		<span class="down-vote-num">{{post.downvotes}}</span>
 
@@ -112,7 +115,8 @@
 
 		</div>
 <div ng-hide="isLoggedIn()">
-<h3>You need to <a href="/#/login">LogIn</a> or <a href="/#/register">Register</a> before you can add a post.</h3>
+<h3> Wanna get in the know ? <a href="/#/login">LogIn</a> or <a href="/#/register">Register</a> to get involved! </h3>
+<h4>Since this is a demo please login with Username: test, Password: test</h4>
 </div>
 		<form class="user-input" ng-show="isLoggedIn()" ng-submit="addPost()" style="margin-top:30px;">
 		<h2>Add a New Post</h2>
@@ -133,7 +137,7 @@
 		<h1>VoxPopuli</h1>
 		</div>
 
-		<div ng-show="error" class="allert alert-danger row">
+		<div ng-show="error" class="alert alert-danger row">
 		<span>{{error.message}}</span>
 		</div>
 
