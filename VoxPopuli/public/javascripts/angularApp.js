@@ -154,6 +154,8 @@ app.config([
 		};
 
 		postobject.addComment = function(id, comment){
+			console.log('attempting to add comments in posts factory');
+
 			return $http.post('/posts/' + id + '/comments', comment, {
 				headers: {Authorization: 'Bearer '+auth.getToken()}
 			});
@@ -196,7 +198,7 @@ app.config([
 		}]);
 
 
-		// app.controller('InvalidCtrl', [
+		// app.factory('InvalidCtrl', [
 		// 	'$scope',
 		// 	'auth',
 		// 	function($scope, auth){
@@ -287,12 +289,13 @@ app.config([
 					$scope.post = post;
 
 					$scope.addComment = function(){
+						console.log('attempting to add comments in MainCtrl');
 						if ($scope.body === '') {return; }
 						posts.addComment(post._id, {
 							body: $scope.body,
 							author: 'user',
 						}).success(function(comment){
-							$scope.post.comments.push(comment);
+							$scope.post.comments.push(comment).console.log(err);
 						});
 						// upvotes: 0,
 						// downvotes: 0

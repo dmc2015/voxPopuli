@@ -129,6 +129,8 @@ router.put('/posts/:post/downvote', auth, function(req, res, next){
 
 //Allows users to create a comment on a post
 router.post('/posts/:post/comments', auth,  function(req, res, next){
+  console.log('reaching comments in express routes');
+
   var comment = new Comment(req.body);
   comment.author = req.payload.username;
   comment.post = req.post;
@@ -145,6 +147,8 @@ router.post('/posts/:post/comments', auth,  function(req, res, next){
 
 //FINDS THE GIVEN COMMENT PRIOR TO UPVOTING THE COMMENT
 router.param('comment', function(req, res, next, id){
+  console.log('reaching route comment route in express');
+
   var query = Comment.findById(id);
 
   query.exec(function (err, post){
@@ -166,6 +170,8 @@ router.post('/posts/:post/comments/:comment/upvote', auth, function(req, res, ne
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  console.log('main express route reached');
+
   res.render('index', { title: 'Express' });
 });
 
