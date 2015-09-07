@@ -138,6 +138,7 @@ app.config([
 			return $http.put('/posts/' + post._id + '/upvote', null, {
 				headers: {Authorization: 'Bearer '+auth.getToken()}
 			}).success(function(data){
+				debugger;
 				post.upvotes += 1;
 			});
 		};
@@ -146,8 +147,12 @@ app.config([
 			return $http.put('/posts/' + post._id + '/downvote', null, {
 				headers: {Authorization: 'Bearer '+auth.getToken()}
 			}).success(function(data){
-				post.downvote +=1;
+				debugger;
+				post.downvotes +=1;
 				console.log(post, 'reached the injected factory for posts down votes');
+			}).error(function(data){
+				console.log(data);
+				debugger;
 			});
 		};
 
