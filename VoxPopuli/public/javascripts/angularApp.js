@@ -11,7 +11,7 @@ app.config([
 			templateUrl: '/home.html',
 			controller: 'MainCtrl',
 			resolve: {
-				postPromise: ['posts', function(posts ) {
+				postPromise: ['posts', function(posts) {
 					return posts.getAll();
 				}]
 			}
@@ -142,6 +142,15 @@ app.config([
 			});
 		};
 
+		postobject.downvote = function(post) {
+			return $http.put('/posts/' + post._id + '/downvote', null, {
+				headers: {Authorization: 'Bearer '+auth.getToken()}
+			}).success(function(data){
+				post.downvote +=1;
+				console.log(post, 'reached the injected factory for posts down votes');
+			});
+		};
+
 		postobject.addComment = function(id, comment){
 			return $http.post('/posts/' + id + '/comments', comment, {
 				headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -166,21 +175,14 @@ app.config([
 		function($scope, $state, auth) {
 			$scope.user = {};
 
-			// $scope.register = function(){
-			// 	auth.register($scope.user).error(function(error){
-			// 		$scope.error = error;
-			// 	}).then(function() {
-			// 		$state.go('home');
-			// 	});
-			// };
-
 			$scope.register = function(){
 				auth.register($scope.user).error(function(error){
 					$scope.error = error;
-				}).then(function(){
+				}).then(function() {
 					$state.go('home');
 				});
 			};
+
 
 			$scope.logIn = function() {
 				auth.logIn($scope.user).error(function(error){
@@ -232,7 +234,9 @@ app.config([
 				};
 
 				$scope.incrementDownvotes = function(post){
-					post.downvotes +=1;
+					// post.downvotes +=1; //NON-PERSISTENT
+					console.log('downvotes is called from mainctrl');
+					posts.downvote(post); //PERSISTENT
 				};
 			}]);
 

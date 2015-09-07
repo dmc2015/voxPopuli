@@ -80,10 +80,10 @@ router.param('post', function(req, res, next, id){
   var query = Post.findById(id);
 
   query.exec(function (err, post){
-      if (err) {return next(err); }
-      if (!post) { return next(new Error('can\'t find post'));}
-      req.post = post;
-      return next();
+    if (err) {return next(err); }
+    if (!post) { return next(new Error('can\'t find post'));}
+    req.post = post;
+    return next();
   });
 });
 
@@ -108,9 +108,24 @@ router.get('/posts/:post', function(req, res, next){
 router.put('/posts/:post/upvote', auth, function(req, res, next){
   req.post.upvote(function(err, post){
     if (err) {return next(err); }
+    console.log(err);
+    // console.log('new log on the way');
+    // console.log(post);
+    // console.log('new log on the way');
+    // console.log(res.json(post));
     res.json(post);
   });
 });
+
+router.put('/posts/:post/downvote', auth, function(req, res, next){
+  req.post.downvote(function(err, post){
+    if (err) {return next(err); }
+    console.log(err);
+    res.json(post);
+  });
+});
+
+
 
 //Allows users to create a comment on a post
 router.post('/posts/:post/comments', auth,  function(req, res, next){
