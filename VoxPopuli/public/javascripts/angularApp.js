@@ -176,10 +176,10 @@ app.config([
 		};
 
 		postobject.downvoteComment = function(post, comment){
-			return $http.put('/posts/' + post._id + '/comments' + comment._id + '/downvote', null, {
+			return $http.put('/posts/' + post._id + '/comments/'+ comment._id + '/downvote', null, {
 				headers: {Authorization: 'Bearer '+auth.getToken()}
 			}).success(function(data){
-				comment.upvotes +=1;
+				comment.downvotes +=1;
 			});
 		};
 
@@ -328,10 +328,9 @@ app.config([
 					$scope.incrementUpvotes = function(comment) {
 						posts.upvoteComment(post, comment);
 						console.log('incrementing up vote for comment in the postctrl', '  comment log from controller:  ', comment);
-						comment.upvote +=1;
 					};
 
-					$scope.incrementDownotes = function(comment){
+					$scope.incrementDownvotes = function(comment){
 						posts.downvoteComment(post, comment);
 					};
 

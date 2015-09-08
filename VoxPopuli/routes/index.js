@@ -187,11 +187,26 @@ router.put('/posts/:post/comments/:comment/upvote', auth, function(req, res, nex
   req.comment.upvote(function(err, comment){
 
     // if (err) {return next(err); }
-    if (err){return res.json(err); }
+    if (err){
+      return res.json(err);
+    }
 
     res.json(req.comment);
   });
 });
+
+
+//Allows for the down vote of a Comment
+router.put('/posts/:post/comments/:comment/downvote', auth, function(req, res, next){
+  req.comment.downvote(function(err, comment){
+    if(err){
+      return res.json(err);
+    }
+    res.json(req.comment);
+  });
+});
+
+
 
 
 /* GET home page. */

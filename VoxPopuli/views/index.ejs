@@ -153,7 +153,7 @@
 
 
 
-      		<div class="ng-cloak" ng-repeat="comment in post.comments | orderBy:'-upvotes'">
+      		<div class="ng-cloak" ng-repeat="comment in post.comments | orderBy:'downvotes - upvotes'">
             <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
             <span class="up-vote-num">{{comment.upvotes}}</span>
 
