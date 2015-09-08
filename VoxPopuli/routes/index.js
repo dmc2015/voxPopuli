@@ -188,11 +188,11 @@ router.get('/', function(req, res, next) {
 });
 
 
-//logs errors if no routes work
-router.use(function(err, req, res, next) {
-  console.log(err);
-  res.json(err);
-});
+// //logs errors if no routes work
+// router.use(function(err, req, res, next) {
+//   console.log(err);
+//   res.json(err);
+// });
 
 
 module.exports = router;
