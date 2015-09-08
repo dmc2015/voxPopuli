@@ -33,6 +33,21 @@ router.param('post', function(req, res, next, id){
   });
 });
 
+//FINDS THE GIVEN COMMENT PRIOR TO UPVOTING THE COMMENT
+router.param('comment', function(req, res, next, id){
+  console.log('reaching route comment route in express');
+
+  var query = Comment.findById(id);
+
+  query.exec(function (err, post){
+    if (err) {return next(err); }
+    if (!comment) {return next(new Error('can\'t find comment'));}
+    req.comment = comment;
+    return next();
+  });
+});
+
+
 // router.post('/posts', auth, function(req, res, next) {
 //   var comment = new Comment(req.body);
 //   comment.post = req.post;
@@ -97,6 +112,12 @@ router.post('/posts', auth, function(req, res, next){
 });
 
 
+// router.post('/posts', auth, function(req, res, next) {
+//   var comment = new Comment(req.body);
+//   comment.post = req.post;
+//   comment.author = req.payload.username;
+// });
+
 
 
 
@@ -157,24 +178,15 @@ router.post('/posts/:post/comments', auth,  function(req, res, next){
   });
 });
 
-//FINDS THE GIVEN COMMENT PRIOR TO UPVOTING THE COMMENT
-router.param('comment', function(req, res, next, id){
-  console.log('reaching route comment route in express');
 
-  var query = Comment.findById(id);
 
-  query.exec(function (err, post){
-    if (err) {return next(err); }
-    if (!comment) {return next(new Error('can\'t find comment'));}
-    req.comment = comment;
-    return next();
-  });
-});
 
 //WRITE A UPVOTE ON A COMMENT, NEEDS A PARAMS TO FIND RIGHT COMMENT
-router.post('/posts/:post/comments/:comment/upvote', auth, function(req, res, next){
+router.put('/posts/:post/comments/:comment/upvote', auth, function(req, res, next){
   req.comment.upvote(function(err, comment){
-    if (err) {return next(err); }
+    // if (err) {return next(err); }
+    if (err){return res.json(err); }
+
     res.json(post);
   });
 });

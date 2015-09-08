@@ -144,6 +144,26 @@ app.config([
 			});
 		};
 
+		// postobject.upvoteComment = function(post, comment) {
+		// 	console.log('incrementing up vote for comment in the post factory', '   comment log from factory:   ', comment);
+		//
+		// 	return $http.put('/posts/' + post._id + '/comments/' + comment._id + '/upvote', null, {
+		// 		headers: {Authorization: 'Bearer '+auth.getToken()}
+		// 	}).success(function(data){
+		// 		comment.upvotes += 1;
+		// 	});
+		// };
+		//
+		postobject.upvoteComment = function(post, comment) {
+  return $http.put('/posts/' + post._id + '/comments/'+ comment._id + '/upvote', null, {
+    headers: {Authorization: 'Bearer '+auth.getToken()}
+  }).success(function(data){
+    comment.upvotes += 1;
+  });
+};
+
+
+
 		postobject.downvote = function(post) {
 			return $http.put('/posts/' + post._id + '/downvote', null, {
 				headers: {Authorization: 'Bearer '+auth.getToken()}
@@ -155,6 +175,14 @@ app.config([
 			});
 		};
 
+		postobject.downvoteComment = function(post, comment){
+			return $http.put('/posts/' + post._id + '/comments' + comment._id + '/downvote', null, {
+				headers: {Authorization: 'Bearer '+auth.getToken()}
+			}).success(function(data){
+				comment.upvotes +=1;
+			});
+		};
+
 		postobject.addComment = function(id, comment){
 			console.log('attempting to add comments in posts factory');
 
@@ -163,13 +191,7 @@ app.config([
 			});
 		};
 
-		postobject.upvoteComment = function(post, comment) {
-			return $http.put('/posts/' + post._id + '/comments/' + comment._id + '/upvote', null, {
-				headers: {Authorization: 'Bearer '+auth.getToken()}
-			}).success(function(data){
-				comment.upvotes += 1;
-			});
-		};
+
 
 		return postobject;
 	}]);
@@ -305,6 +327,11 @@ app.config([
 					};
 					$scope.incrementUpvotes = function(comment) {
 						posts.upvoteComment(post, comment);
+						console.log('incrementing up vote for comment in the postctrl', '  comment log from controller:  ', comment);
+					};
+
+					$scope.incrementDownotes = function(comment){
+						posts.downvoteComment(post, comment);
 					};
 
 				}]);
