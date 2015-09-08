@@ -28,153 +28,147 @@
 		</ul>
 	</nav>
 	<div class="row container">
-
 		<div class="col-md-6 col-md-offset-3">
-
 			<div class="page-header">
 				<h1><a href="#/home"> VoxPopuli</a></h1>
 			</div>
-
 			<ui-view></ui-view>
-
 		</div>
 
 
-		<script type="text/ng-template" id="/posts.html">
-		<div class="page-header ng-cloak">
-			<h3>
-			<a ng-show="post.link" href="{{post.link}}">
-				{{post.title}}
-			</a>
-			<span ng-hide="post.link">
-				{{post.title}}
-			</span>
-			</h3>
-		</div>
+  <!--  //SCRIPT -->
+    <script type="text/ng-template" id="/home.html">
+
+    <!--// <pleaseLogin visible="showModal" ng-bind="invalidUserMsg"></pleaseLogin> -->
 
 
+    <div class="ng-cloak" ng-repeat="post in posts | orderBy:'downvotes - upvotes'">
+    <!-- //<div ng-repeat="post in posts | orderBy: '-upvotes'">  This is the line from the guide, it picks the highest up votes. The line above is new and subtracts downvotes fom upvotes and then puts the one with the highest difference reletative to upvotes on top-->
+    <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
+    <span class="up-vote-num">{{post.upvotes}}</span>
 
-		<div class="ng-cloak" ng-repeat="comment in post.comments | orderBy:'-upvotes'">
-			<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
-			{{comment.upvotes}} {{comment.downvotes}}- by {{comment.author}}
-			<span class="maincontent">
-				{{comment.body}}
-			</span>
-		</div>
 
+    <span class="glyphicon glyphicon-thumbs-down" ng-click="incrementDownvotes(post)"></span>
+    <span class="down-vote-num">{{post.downvotes}}</span>
+
+    <span class=main-content>
+    <a ng-show="post.link" href="{{post.link}}">
+    {{post.title}}
+    </a>
+    <span ng-hide="post.link">
+    {{post.title}}
+
+    <span ng-show="post.author">
+    | posted by<a>{{post.author}}</a> |
+    </span>
+
+    </span>
+
+    </span>
+    <span>
+    <a href="#/posts/{{post._id}}">Comments</a>
+    </span>
+
+    <!-- //<span {{orderBy: 'post{{$index}}'>
+    //<a href="#/posts/{{$index}}">Comments</a>
+    //	<a href="#/posts/{{post._id}}">Comments</a>
+    //</span> -->
+
+    </div>
 <div ng-hide="isLoggedIn()">
 <h3> Wanna get in the know ? <a href="/#/login">LogIn</a> or <a href="/#/register">Register</a> to get involved! </h3>
 <h4>Since this is a demo please login with Username: test, Password: test</h4>
 </div>
+    <form class="user-input" ng-show="isLoggedIn()" ng-submit="addPost()" style="margin-top:30px;">
+    <h2>Add a New Post</h2>
+    <div class="form-group">
+    <input class="form-control" text="text" ng-model="title" placeholder="Title of Your Post"></input>
+    </div>
+    <div class="form-group">
+    <input class="form-control" text="text" ng-model="link" placeholder="Your Link"></inpu>
+    </div>
+    <button type="submit" class="btn btn-primary">Post</button>
+    </form>
 
-		<form ng-show="isLoggedIn()" ng-submit="addComment()" class="user-input">
-		<h3>Add a New Comment</h3>
-		<div class="form-group">
-		<input type="text" class="form-control" placeholder="New Comment ?" ng-model="body"</input>
-		</div>
-		<button type="submit" class="btn btn-primary">Post</button>
-		</form>
-		</script>
-
-		<script type="text/ng-template" id="/home.html">
-
-		<!--// <pleaseLogin visible="showModal" ng-bind="invalidUserMsg"></pleaseLogin> -->
-
-
-		<div class="ng-cloak" ng-repeat="post in posts | orderBy:'downvotes - upvotes'">
-		<!-- //<div ng-repeat="post in posts | orderBy: '-upvotes'">  This is the line from the guide, it picks the highest up votes. The line above is new and subtracts downvotes fom upvotes and then puts the one with the highest difference reletative to upvotes on top-->
-		<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(post)"></span>
-		<span class="up-vote-num">{{post.upvotes}}</span>
+    </script>
 
 
-		<span class="glyphicon glyphicon-thumbs-down" ng-click="incrementDownvotes(post)"></span>
-		<span class="down-vote-num">{{post.downvotes}}</span>
-
-		<span class=main-content>
-		<a ng-show="post.link" href="{{post.link}}">
-		{{post.title}}
-		</a>
-		<span ng-hide="post.link">
-		{{post.title}}
-
-		<span ng-show="post.author">
-		| posted by<a>{{post.author}}</a> |
-		</span>
-
-		</span>
-
-		</span>
-		<span>
-		<a href="#/posts/{{post._id}}">Comments</a>
-		</span>
-
-		<!-- //<span {{orderBy: 'post{{$index}}'>
-		//<a href="#/posts/{{$index}}">Comments</a>
-		//	<a href="#/posts/{{post._id}}">Comments</a>
-		//</span> -->
-
-		</div>
-<div ng-hide="isLoggedIn()">
-<h3> Wanna get in the know ? <a href="/#/login">LogIn</a> or <a href="/#/register">Register</a> to get involved! </h3>
-<h4>Since this is a demo please login with Username: test, Password: test</h4>
-</div>
-		<form class="user-input" ng-show="isLoggedIn()" ng-submit="addPost()" style="margin-top:30px;">
-		<h2>Add a New Post</h2>
-		<div class="form-group">
-		<input class="form-control" text="text" ng-model="title" placeholder="Title of Your Post"></input>
-		</div>
-		<div class="form-group">
-		<input class="form-control" text="text" ng-model="link" placeholder="Your Link"></inpu>
-		</div>
-		<button type="submit" class="btn btn-primary">Post</button>
-		</form>
-
-		</script>
 
 
-		<script type="text/ng-template" id="/register.html">
-		<div ng-show="error" class="alert alert-danger row">
-		<span>{{error.message}}</span>
-		</div>
-
-		<form ng-submit="register()" style="margin-top: 30px;">
-		<h3>Register</h3>
-
-		<div class="form-group">
-		<input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
-		</div>
-
-		<div class="form-group">
-		<input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
-		</div>
-		<button type="submit" class="btn btn-primary">Register</button>
-		</form>
-		</script>
-
-		<script type="text/ng-template" id="/login.html">
+    <!--  //SCRIPT -->
+    		<script type="text/ng-template" id="/login.html">
 
 
-		<div ng-show="error" class="alert alert-danger row">
-		<span>{{ error.message }}</span>
-		</div>
+    		<div ng-show="error" class="alert alert-danger row">
+    		<span>{{ error.message }}</span>
+    		</div>
 
-		<form ng-submit="logIn()" style="margin-top: 30px;">
-		<h3>Log In</h3>
+    		<form ng-submit="logIn()" style="margin-top: 30px;">
+    		<h3>Log In</h3>
 
-		<div class="form-group">
-		<input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
-		</div>
+    		<div class="form-group">
+    		<input type="text" class="form-control" placeholder="Username" ng-model="user.username"></input>
+    		</div>
 
-		<div class="form-group">
-		<input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
-		</div>
-		<button type="submit" class="btn btn-primary">Log In</button>
-		</form>
-		</script>
+    		<div class="form-group">
+    		<input type="password" class="form-control" placeholder="Password" ng-model="user.password"></input>
+    		</div>
+    		<button type="submit" class="btn btn-primary">Log In</button>
+    		</form>
+    		</script>
+
+
+        <script type="text/ng-template" id="/posts.html">
+      		<div class="page-header ng-cloak">
+      			<h3>
+      			<a ng-show="post.link" href="{{post.link}}">
+      				{{post.title}}
+      			</a>
+      			<span ng-hide="post.link">
+      				{{post.title}}
+      			</span>
+      			</h3>
+      		</div>
+
+
+
+      		<div class="ng-cloak" ng-repeat="comment in post.comments | orderBy:'-upvotes'">
+            <span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
+            <span class="up-vote-num">{{comment.upvotes}}</span>
+
+
+            <span class="glyphicon glyphicon-thumbs-down" ng-click="incrementDownvotes(comment)"></span>
+            <span class="down-vote-num">{{comment.downvotes}}</span>
+            <span class="comment-author"> - Comment By: {{comment.author}}</span>
+            <div class="comment-body">{{comment.body}} </div>
+
+
+
+            <!--//
+            //<span class="glyphicon glyphicon-thumbs-up" ng-click="incrementUpvotes(comment)"></span>
+      		//	{{comment.upvotes}} {{comment.downvotes}}- by {{comment.author}}
+      			//<span class="maincontent panel">
+      		//		<kbd>{{comment.body}}</kbd>
+      		//	</span> -->
+      		</div>
+
+      <div ng-hide="isLoggedIn()">
+      <h3> Wanna get in the know ? <a href="/#/login">LogIn</a> or <a href="/#/register">Register</a> to get involved! </h3>
+      <h4>Since this is a demo please login with Username: test, Password: test</h4>
+      </div>
+
+      		<form ng-show="isLoggedIn()" ng-submit="addComment()" class="user-input">
+      		<h3>Add a New Comment</h3>
+      		<div class="form-group">
+      		<input type="text" class="form-control" placeholder="New Comment ?" ng-model="body"</input>
+      		</div>
+      		<button type="submit" class="btn btn-primary">Post</button>
+      		</form>
+      		</script>
+
 
 
 		<script src="/javascripts/angularApp.js"></script>
-
 
 	</body>
 	</html>

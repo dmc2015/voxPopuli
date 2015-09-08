@@ -6,3 +6,10 @@
 .glyphicon-thumbs-up, .glyphicon-thumbs-down{
   cursor:pointer;
 }
+
+.comment-body{
+  border: 2px solid blue;
+  display: inline-block;
+  width: 200px;
+  padding-left: 10%;
+}
