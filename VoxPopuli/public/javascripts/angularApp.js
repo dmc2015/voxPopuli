@@ -1,10 +1,12 @@
-var app = angular.module('VoxPopuli', ['ui.router']);
+var app = angular.module('VoxPopuli', ['ui.router'/*,'ui.bootstrap'*/]);
 
 
 app.config([
 	'$stateProvider',
 	'$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider){
+	/*'$httpProvider',*/
+	/*'$rootScope',*/
+	function($stateProvider, $urlRouterProvider, /*$httpProvider/*, $rootScope*/){
 		$stateProvider
 		.state('home', {
 			url: '/home',
@@ -46,8 +48,17 @@ app.config([
 				}
 			}]
 		});
-		$urlRouterProvider.otherwise('home');
-	}]);
+	/*	$urlRouterProvider.otherwise('home');
+
+			$httpProvider.interceptors.push(function(){
+				return {
+					'requestError' : function(rejection){
+						console.log('rejected', rejection);
+						$rootScope.emit('openLoginModal',{});
+					}
+				};
+			});
+	}]);*/
 
 	app.factory('auth', ['$http', '$window', function($http, $window) {
 		var auth = {};
@@ -259,7 +270,9 @@ app.config([
 			'auth',
 			// 'InvalidCtrl',
 			'$stateParams',
-			function($scope, posts, auth){
+			/*'$rootScope',
+			'$modal',*/
+			function($scope, posts, auth /*$rootScope, $modal*/){
 				$scope.isLoggedIn = auth.isLoggedIn;
 				$scope.test = 'Hello world!';
 				$scope.posts = posts.posts;/*[
@@ -269,6 +282,14 @@ app.config([
 					{title: 'post 4', upvotes:4},
 					{title: 'post 5', upvotes:11}
 				];*/
+				/*$rootScope.on('openLoginModal',function(event,data){
+					console.log('trying to open modal');
+					var modalInstace = $modal.open({
+						templateUrl : '/login.html',
+						controller : 'AuthCtrl',
+						size : 'sm'
+					});
+				});*/
 
 				$scope.addPost = function(){
 					if(!$scope.title || $scope.title === "") {return;}
