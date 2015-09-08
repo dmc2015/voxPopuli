@@ -39,7 +39,7 @@ router.param('comment', function(req, res, next, id){
 
   var query = Comment.findById(id);
 
-  query.exec(function (err, post){
+  query.exec(function (err, comment){
     if (err) {return next(err); }
     if (!comment) {return next(new Error('can\'t find comment'));}
     req.comment = comment;
@@ -183,11 +183,13 @@ router.post('/posts/:post/comments', auth,  function(req, res, next){
 
 //WRITE A UPVOTE ON A COMMENT, NEEDS A PARAMS TO FIND RIGHT COMMENT
 router.put('/posts/:post/comments/:comment/upvote', auth, function(req, res, next){
+  console.log('comment',req.comment);
   req.comment.upvote(function(err, comment){
+
     // if (err) {return next(err); }
     if (err){return res.json(err); }
 
-    res.json(post);
+    res.json(req.comment);
   });
 });
 

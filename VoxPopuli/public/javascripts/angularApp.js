@@ -328,6 +328,7 @@ app.config([
 					$scope.incrementUpvotes = function(comment) {
 						posts.upvoteComment(post, comment);
 						console.log('incrementing up vote for comment in the postctrl', '  comment log from controller:  ', comment);
+						comment.upvote +=1;
 					};
 
 					$scope.incrementDownotes = function(comment){
