@@ -21,3 +21,7 @@
 .comment-author{
   margin-right: 2%;
 }
+
+.login, .user-input, .register{
+  margin-top: 30px;
+}

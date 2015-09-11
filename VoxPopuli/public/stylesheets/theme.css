@@ -8,8 +8,54 @@
 }
 
 .comment-body{
-  border: 2px solid blue;
+  /*border: 2px solid blue;*/
   display: inline-block;
   width: 200px;
   padding-left: 10%;
+  margin-bottom: 2%;
+  vertical-align: text-top;
+
+}
+
+
+body, nav a, body a{
+  background-color: #36454f;
+  color: #ccc !important;
+}
+
+a:hover, a:active{
+  color: white !important;
+  text-decoration: none !important;
+}
+
+a:visited, a:focus{
+  text-decoration: none !important;
+}
+
+nav.navbar-default{
+  background-color: #36454f !important;
+}
+
+.nav > li > a{
+  padding: 10px 35px;
+}
+/*
+.nav > ul > li * a:hover, .navbar * a{
+  color: white !important;
+}
+
+
+body > nav > ul > li:nth-child(3) > a{
+  color:white !important;
+}*/
+
+@media screen and (max-width: 767px){
+  .navbar{
+    border: none !important;
+  }
+}
+
+.comment-container{
+  border: 2px white solid;
+  margin-bottom: 2%;
 }
