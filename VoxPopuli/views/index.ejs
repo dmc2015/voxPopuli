@@ -5,11 +5,13 @@
 	<link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/stylesheets/layout.css"/>
 	<link rel="stylesheet" type="text/css" href="/stylesheets/theme.css"/>
+	<link rel="stylesheet" type="text/css" href="/stylesheets/mediaQuery.css"/>
+
 
 	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js"></script>
 
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.10/angular-ui-router.js"></script>
-
+<link href='https://fonts.googleapis.com/css?family=Qwigley|Kurale|Almendra+SC|Teko:400,300|Elsie+Swash+Caps|New+Rocker|Roboto+Slab:400,100' rel='stylesheet' type='text/css'>
 
 
 </head>
@@ -66,7 +68,7 @@
 
 		</span>
 		<span>
-		<a href="#/posts/{{post._id}}">Comments</a>
+		<a class="underlined" href="#/posts/{{post._id}}">Comments</a>
 		</span>
 
 		<!-- //<span {{orderBy: 'post{{$index}}'>
@@ -76,24 +78,32 @@
 
 		</div>
 		<div ng-hide="isLoggedIn()">
-		<h3> Wanna get in the know ? <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> to get involved! </h3>
-		<h4>Since this is a demo please log in with Username: 'test', Password: 'test' .</h4>
+
 		<div>
-		<p class="desc">VoxPopuli is a MEAN Stack and Bootstrap application that is designed to share information and public opninion among users.
-		Some of the current features include:</p>
+		<p class="desc">VoxPopuli is a MEAN Stack Bootstrap, hosted on Digital Ocean, the application is designed to share information and public opninion among users.</p>
+
+		<p>Some of the current features include:</p>
 		<ul>
 		<li>Posting Links</li>
 		<li>Commenting on Links</li>
 		<li>User Authentication</li>
 		<li>Voting on Comments</li>
 		</ul>
-		<h5>Future Iterations will include:</h5>
+		<p>Future Iterations will include:</p>
 		<ul>
 		<li>Search features</li>
 		<li>Filters</li>
 		<li>Social Media Logins</li>
 		</ul>
 		</div>
+
+		<h3>
+			Wanna get in the know ? <a class="underlined" href="/#/login">Log In</a> or <a class="underlined" href="/#/register">Register</a>!
+		</h3>
+		<h4>
+			Since this is a demo please log in with Username: 'test', Password: 'test' .
+		</h4>
+
 		</div>
 		<form class="user-input" ng-show="isLoggedIn()" ng-submit="addPost()">
 		<h2>Add a New Post</h2>
@@ -101,7 +111,7 @@
 		<input class="form-control" text="text" ng-model="title" placeholder="Title of Your Post"></input>
 		</div>
 		<div class="form-group">
-		<input class="form-control" text="text" ng-model="link" placeholder="Your Link"></inpu>
+		<input class="form-control" text="text" ng-model="link" placeholder="Your Link"></input>
 		</div>
 		<button type="submit" class="btn btn-primary">Post</button>
 		</form>
@@ -190,8 +200,8 @@
 		//	</span> -->
 		</div>
 
-		<div ng-hide="isLoggedIn()">
-		<h3> Wanna get in the know ? <a href="/#/login">Log In</a> or <a href="/#/register">Register</a> to get involved! </h3>
+		<div class="pleaseLogin" ng-hide="isLoggedIn()">
+		<h3> Wanna get in the know ? <a class="underlined" href="/#/login">Log In</a> or <a class="underlined" href="/#/register">Register</a>! </h3>
 		<h4>Since this is a demo please log in with Username: test, Password: test</h4>
 		</div>
 

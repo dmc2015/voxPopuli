@@ -5,6 +5,11 @@
 
 }
 
+.desc{
+  margin: 3px;
+  margin-top: 20px;
+}
+
 .user-input{
   margin-top: 30px;
 }
@@ -12,7 +17,9 @@
 .main-content{
   margin-left:10px;
 }
-
+.nav > li > a{
+  padding: 10px 35px;
+}
 
 .up-vote-num, .down-vote-num{
     margin-right: 2%;
@@ -24,4 +31,8 @@
 
 .login, .user-input, .register{
   margin-top: 30px;
+}
+
+.pleaseLogin{
+  padding-bottom: 5px;
 }
