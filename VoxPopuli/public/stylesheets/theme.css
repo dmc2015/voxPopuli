@@ -77,6 +77,10 @@ ui-view{
 .desc, p{
   font-size: 150%;
 }
+
+.nav {
+  font-family: 'Roboto Slab', serif;
+}
 /*font-family: 'Qwigley', cursive;
 font-family: 'Kurale', serif;
 font-family: 'Almendra SC', serif;
