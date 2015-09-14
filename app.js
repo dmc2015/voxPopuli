@@ -1,98 +1,79 @@
-var app = angular.module('VoxPopuli', ['ui.router']);
+var express = require('express'),
+    path = require('path'),
+    favicon = require('serve-favicon'),
+    logger = require('morgan'),
+    cookieParser = require('cookie-parser'),
+    bodyParser = require('body-parser'),
+    mongoose = require('mongoose'),
+    passport = require('passport');
+
+require('./models/Posts.js');
+require('./models/Comments.js');
+require('./models/Users.js');
+require('./config/passport.js');
+
+mongoose.connect('mongodb://localhost/news');
 
 
-app.config([
-	'$stateProvider',
-	'$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider){
-		$stateProvider
-		.state('home', {
-			url: '/home',
-			templateUrl: '/home.html',
-			controller: 'MainCtrl'
-		})//;
-		.state('posts', {
-			url: '/posts/{id}',
-			templateUrl: '/posts.html',
-			controller: 'PostsCtrl'
-		});
-		$urlRouterProvider.otherwise('home');
-}]);
+var routes = require('./routes/index');
+var users = require('./routes/users');
 
-app.factory('posts', [function(){
-	//the body of a service
-	var postobject = {
-		posts: [
+var app = express();
+app.set("env", "development");
 
-		]
-		// posts: [
-		// 	{title: 'post 1', upvotes:2, downvotes:1, comments: ''},
-		// 	{title: 'post 2', upvotes:1, downvotes:1},
-		// 	{title: 'post 3', upvotes:5, downvotes:1},
-		// 	{title: 'post 4', upvotes:4, downvotes:1},
-		// 	{title: 'post 5', upvotes:11, downvotes:1}
-		// ]
-	};
-	return postobject;
-}]);
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-app.controller('MainCtrl', [
-	'$scope',
-	'posts',
-	'$stateParams',
-	function($scope, posts){
-		$scope.test = 'Hello world!';
-		$scope.posts = posts.posts;/*[
-			{title: 'post 1', upvotes:2},
-			{title: 'post 2', upvotes:1},
-			{title: 'post 3', upvotes:5},
-			{title: 'post 4', upvotes:4},
-			{title: 'post 5', upvotes:11}
-			];*/
-
-			$scope.addPost = function(){
-				if(!$scope.title || $scope.title === "") {return;}
-				$scope.posts.push({
-					title: $scope.title,
-					link: $scope.link,
-					upvotes:0,
-					downvotes:0,
-					comments: [
-						// {author: 'Dave', body: 'Well said', upvotes: 0},
-						// {author: 'Bill Bob', body: 'You lie', upvotes: 1}
-					]
-				});
-				$scope.title="";
-				$scope.link="";
-			};
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
 
 
-			$scope.incrementUpvotes = function(post){
-				post.upvotes +=1;
-			};
 
-			$scope.incrementDownvotes = function(post){
-				post.downvotes +=1;
-			};
-}])//;
+app.use('/', routes);
+app.use('/users', users);
 
-app.controller('PostsCtrl', [
-	'$scope',
-	'$stateParams',
-	'posts',
-	function($scope, $stateParams, posts){
-		$scope.post = posts.posts[$stateParams.id];
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
-		$scope.addComment = function(){
-			if ($scope.body === '') {return; }
-			$scope.post.comments.push({
-				body: $scope.body,
-				author: 'user',
-				upvotes: 0,
-				downvotes: 0
-			});
-			$scope.body = '';
-		};
+// error handlers
 
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  console.log('reaching this point');
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+    console.log(err);
+  });
+}
 
-}]);
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
+app.listen(process.env.PORT || 3000, function() {
+  console.log('Server running at localhost:3000');
+});
+
+module.exports = app;
