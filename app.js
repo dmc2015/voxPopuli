@@ -12,14 +12,16 @@ require('./models/Comments.js');
 require('./models/Users.js');
 require('./config/passport.js');
 
-mongoose.connect('mongodb://localhost/news');
+// mongoose.connect('mongodb://localhost/news');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/news');
 
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
-app.set("env", "development");
+// app.set("env", "development");
+app.set("env", process.env.NODE_ENV || "development");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
